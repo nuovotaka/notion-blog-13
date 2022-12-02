@@ -16,6 +16,7 @@ import {
   PostExcerpt,
   PostTags,
   PostTitle,
+  PrevPageLink,
 } from '../../../../components/blog-parts'
 import styles from '../../../../styles/blog.module.scss'
 import Mystyles from '../../../../styles/mystyles.module.scss'
@@ -24,7 +25,6 @@ export const revalidate = 3600
 
 const BlogBeforeDatePage = async ({ params: { date: encodedDate } }) => {
   const date = decodeURIComponent(encodedDate)
-  // const router = useRouter()
 
   if (!Date.parse(date) || !/^\d{4}-\d{2}-\d{2}/.test(date)) {
     notFound()
@@ -64,9 +64,7 @@ const BlogBeforeDatePage = async ({ params: { date: encodedDate } }) => {
 
           <footer>
             <div className={Mystyles.PageLinkContainer}>
-              <div>
-                {/* <a onClick={() => router.back()}>← Newer Page</a> */}
-              </div>
+              <PrevPageLink />
               <NextPageLink firstPost={firstPost} posts={posts} />
             </div>
           </footer>

@@ -10,6 +10,7 @@ import {
   PostExcerpt,
   PostTags,
   PostTitle,
+  PrevPageLink,
 } from '../../../../../../components/blog-parts'
 import {
   getPosts,
@@ -26,7 +27,6 @@ export const revalidate = 3600
 const BlogTagBeforeDatePage = async ({ params: { tag: encodedTag, date: encodedDate } }) => {
   const tag = decodeURIComponent(encodedTag)
   const date = decodeURIComponent(encodedDate)
-  // const router = useRouter
 
   if (!Date.parse(date) || !/^\d{4}-\d{2}-\d{2}/.test(date)) {
     notFound()
@@ -67,9 +67,7 @@ const BlogTagBeforeDatePage = async ({ params: { tag: encodedTag, date: encodedD
 
           <footer>
             <div className={Mystyles.PageLinkContainer}>
-              <div>
-                {/* <a onClick={() => router.back()}>← Newer Page</a> */}
-              </div>
+              <PrevPageLink />
               <NextPageLink firstPost={firstPost} posts={posts} tag={tag} />
             </div>
           </footer>

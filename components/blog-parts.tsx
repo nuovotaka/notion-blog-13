@@ -1,4 +1,7 @@
+'use client'
+
 import React from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 import { Post } from '../lib/notion/interfaces'
@@ -152,3 +155,12 @@ export const PostsNotFound = () => (
     Woops! did not find the posts, redirecting you back to the blog index
   </div>
 )
+
+export const PrevPageLink = () => {
+  const router = useRouter()
+  return (
+    <div>
+      <a onClick={() => router.back()}>← Newer Page</a>
+    </div>
+  )
+}
