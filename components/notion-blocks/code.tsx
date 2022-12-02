@@ -18,7 +18,7 @@ import 'prismjs/components/prism-yaml'
 import Mermaid from './mermaid'
 import { RichText } from '../../lib/notion/interfaces'
 
-import styles from '../../styles/notion-block.module.css'
+import styles from '../../styles/notion-block.module.scss'
 
 const Code = ({ block }) => {
   const code = block.Code.RichTexts.map((richText: RichText) => richText.Text.Content).join('')

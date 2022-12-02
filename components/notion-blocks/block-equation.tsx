@@ -1,9 +1,9 @@
 'use client'
 
-import 'katex/dist/katex.min.css'
+import 'katex/dist/katex.min.scss'
 import { BlockMath } from 'react-katex'
 
-import styles from '../../styles/notion-block.module.css'
+import styles from '../../styles/notion-block.module.scss'
 
 const BlockEquation = ({ block }) => (
   <div className={styles.equation}>

@@ -9,7 +9,7 @@ import ImageBlock from './notion-blocks/image-block'
 import InlineEquation from './notion-blocks/inline-equation'
 import BlockEquation from './notion-blocks/block-equation'
 
-import styles from '../styles/notion-block.module.css'
+import styles from '../styles/notion-block.module.scss'
 
 const RichText = ({ richText }) => {
   let element
