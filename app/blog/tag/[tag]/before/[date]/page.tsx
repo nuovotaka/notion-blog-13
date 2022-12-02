@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { NUMBER_OF_POSTS_PER_PAGE } from '../../../../../../app/server-constants'
+import { NUMBER_OF_POSTS_PER_PAGE } from '../../../../../server-constants'
 import GoogleAnalytics from '../../../../../../components/google-analytics'
 import {
   BlogPostLink,
