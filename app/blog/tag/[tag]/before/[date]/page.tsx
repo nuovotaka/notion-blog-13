@@ -10,7 +10,6 @@ import {
   PostExcerpt,
   PostTags,
   PostTitle,
-  ReadMoreLink,
 } from '../../../../../../components/blog-parts'
 import {
   getPosts,
@@ -20,12 +19,14 @@ import {
   getAllTags,
 } from '../../../../../../lib/notion/client'
 import styles from '../../../../../../styles/blog.module.scss'
+import Mystyles from '../../../../../../styles/mystyles.module.scss'
 
 export const revalidate = 3600
 
 const BlogTagBeforeDatePage = async ({ params: { tag: encodedTag, date: encodedDate } }) => {
   const tag = decodeURIComponent(encodedTag)
   const date = decodeURIComponent(encodedDate)
+  // const router = useRouter
 
   if (!Date.parse(date) || !/^\d{4}-\d{2}-\d{2}/.test(date)) {
     notFound()
@@ -50,6 +51,7 @@ const BlogTagBeforeDatePage = async ({ params: { tag: encodedTag, date: encodedD
 
           <NoContents contents={posts} />
 
+          <div className={styles.template}>
           {posts.map(post => {
             return (
               <div className={styles.post} key={post.Slug}>
@@ -57,13 +59,19 @@ const BlogTagBeforeDatePage = async ({ params: { tag: encodedTag, date: encodedD
                 <PostTags post={post} />
                 <PostTitle post={post} />
                 <PostExcerpt post={post} />
-                <ReadMoreLink post={post} />
+                {/* <ReadMoreLink post={post} /> */}
               </div>
             )
           })}
+          </div>
 
           <footer>
-            <NextPageLink firstPost={firstPost} posts={posts} tag={tag} />
+            <div className={Mystyles.PageLinkContainer}>
+              <div>
+                {/* <a onClick={() => router.back()}>← Newer Page</a> */}
+              </div>
+              <NextPageLink firstPost={firstPost} posts={posts} tag={tag} />
+            </div>
           </footer>
         </div>
 

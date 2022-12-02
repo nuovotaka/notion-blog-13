@@ -3,6 +3,7 @@ import * as responses from './responses'
 import {
   Post,
   Block,
+  ChildPage,
   Paragraph,
   Heading1,
   Heading2,
@@ -17,6 +18,7 @@ import {
   Callout,
   Embed,
   Video,
+  Pdf,
   Bookmark,
   LinkPreview,
   SyncedBlock,
@@ -31,6 +33,7 @@ import {
   RichText,
   Text,
   Annotation,
+  Mention,
 } from './interfaces'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { Client } = require('@notionhq/client')
@@ -407,6 +410,8 @@ export async function getAllBlocksByBlockId(blockId: string): Promise<Block[]> {
       block.SyncedBlock.Children = await _getSyncedBlockChildren(block)
     } else if (block.Type === 'toggle') {
       block.Toggle.Children = await getAllBlocksByBlockId(block.Id)
+    } else if (block.Type === 'child_page' && block.HasChildren) {
+      block.ChildPage.Children = await getAllBlocksByBlockId(block.Id)
     }
   }
 
@@ -429,6 +434,14 @@ function _buildBlock(blockObject: responses.BlockObject): Block {
   }
 
   switch (blockObject.type) {
+    case 'child_page':
+      const childpage: ChildPage = {
+        Title: blockObject.child_page.title,
+        Children: [],
+      }
+
+      block.ChildPage = childpage
+      break
     case 'paragraph':
       const paragraph: Paragraph = {
         RichTexts: blockObject.paragraph.rich_text.map(_buildRichText),
@@ -493,6 +506,8 @@ function _buildBlock(blockObject: responses.BlockObject): Block {
 
       if (blockObject.video.type === 'external') {
         video.External = { Url: blockObject.video.external.url }
+      } else {
+        video.File = { Url: blockObject.video.file.url }
       }
 
       block.Video = video
@@ -575,6 +590,19 @@ function _buildBlock(blockObject: responses.BlockObject): Block {
       }
 
       block.Embed = embed
+      break
+    case 'pdf':
+      const pdf: Pdf = {
+        Type: blockObject.pdf.type,
+      }
+
+      if (blockObject.pdf.type === 'file') {
+        pdf.File = { Url: blockObject.pdf.file.url }
+      } else {
+        pdf.External = { Url: blockObject.pdf.external.url }
+      }
+
+      block.Pdf = pdf
       break
     case 'bookmark':
       const bookmark: Bookmark = {
@@ -785,6 +813,7 @@ function _buildPost(pageObject: responses.PageObject): Post {
     OGImage:
       prop.OGImage.files.length > 0 ? prop.OGImage.files[0].file.url : null,
     Rank: prop.Rank.number,
+    Like: prop.Like.number,
   }
 
   return post
@@ -823,7 +852,46 @@ function _buildRichText(richTextObject: responses.RichTextObject): RichText {
       Expression: richTextObject.equation.expression,
     }
     richText.Equation = equation
+  } else if (richTextObject.type === 'mention') {
+    if (richTextObject.mention.type === 'page') {
+      const mention: Mention = {
+        Type: richTextObject.mention.type
+      }
+      mention.Page = {
+        Id: richTextObject.mention.page.id
+      }
+      richText.Mention = mention
+    } else if (richTextObject.mention.type === 'date') {
+      const mention: Mention = {
+        Type: richTextObject.mention.type
+      }
+      mention.Date = {
+        Start: richTextObject.mention.date.start,
+        End: richTextObject.mention.date.end,
+      }
+      richText.Mention = mention
+    } else {
+      const mention: Mention = {
+        Type: richTextObject.mention.type
+      }
+      richText.Mention = mention
+    }
   }
 
   return richText
+}
+
+export async function incrementLikes(post:Post) {
+  const result = await client.pages.update({
+    page_id: post.PageId,
+    properties: {
+      'Like': (post.Like || 0) + 1,
+    },
+  })
+
+  if (!result) {
+    return null
+  }
+
+  return _buildPost(result)
 }

@@ -6,6 +6,7 @@ import {
 
 const DocumentHead = ({ title = '', description = '', path = '', urlOgImage = '' }) => (
   <>
+    <meta charSet='UTF-8' />
     <title>{title ? `${title} - ${NEXT_PUBLIC_SITE_TITLE}` : NEXT_PUBLIC_SITE_TITLE}</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <meta

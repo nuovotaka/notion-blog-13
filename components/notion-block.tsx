@@ -8,6 +8,8 @@ import Video from './notion-blocks/video'
 import ImageBlock from './notion-blocks/image-block'
 import InlineEquation from './notion-blocks/inline-equation'
 import BlockEquation from './notion-blocks/block-equation'
+import Pdf from './notion-blocks/pdf'
+import InlineMention from './notion-blocks/inline-mention'
 
 import styles from '../styles/notion-block.module.scss'
 
@@ -18,7 +20,7 @@ const RichText = ({ richText }) => {
   } else if (richText.Equation) {
     element = <InlineEquation equation={richText.Equation} />
   } else {
-    element = null
+    element = <InlineMention mention={richText} />
   }
 
   if (richText.Annotation.Bold) {
@@ -41,7 +43,7 @@ const RichText = ({ richText }) => {
   if (richText.Annotation.Code) {
     element = <code>{element}</code>
   }
-  if (richText.Href) {
+  if (!richText.Mention && richText.Href) {
     element = <a href={richText.Href}>{element}</a>
   }
 
@@ -90,6 +92,21 @@ const colorClass = (color: string) => {
   return null
 }
 
+const ChildPage = ({ block }) => {
+  const title = block.ChildPage.Title
+  return (
+    <div className={styles.childpage}>
+      <input id='check' type='checkbox' ></input>
+      <label htmlFor='check'>{title}</label>
+        {block.HasChildren ? (
+          <div className={styles.childpage_children}>
+            <NotionBlocks blocks={block.ChildPage.Children} />
+          </div>
+        ) : null }
+    </div>
+  )
+}
+
 const Paragraph = ({ block }) => (
   <p className={colorClass(block.Paragraph.Color)}>
     {block.Paragraph.RichTexts.map((richText: interfaces.RichText, i: number) => (
@@ -124,6 +141,7 @@ const TableOfContents = ({ block, blocks }) => {
   const headings = blocks.filter((b: interfaces.Block) => b.Type === 'heading_1' || b.Type === 'heading_2' || b.Type === 'heading_3')
   return (
     <div className={styles.tableOfContents}>
+      <div>▼ 目次</div>
       {headings.map((headingBlock: interfaces.Block) => {
         const heading = headingBlock.Heading1 || headingBlock.Heading2 || headingBlock.Heading3
 
@@ -215,25 +233,26 @@ const ColumnList = ({ block, blocks }) => (
 )
 
 const List = ({ block }) => {
-  if (block.Type === 'bulleted_list') {
-    return (
-      <ul>
-        <BulletedListItems blocks={block.ListItems} />
-      </ul>
-    )
-  } else if (block.Type == 'numbered_list') {
-    return (
-      <ol>
-        <NumberedListItems blocks={block.ListItems} />
-      </ol>
-    )
+  switch (block.Type) {
+    case 'bulleted_list':
+      return (
+        <ul>
+          <BulletedListItems blocks={block.ListItems} />
+        </ul>
+      )
+    case 'numbered_list':
+      return (
+        <ol>
+          <NumberedListItems blocks={block.ListItems} />
+        </ol>
+      )
+    case 'to_do':
+      return (
+        <div className={styles.toDo}>
+          <ToDoItems blocks={block.ListItems} />
+        </div>
+      )
   }
-
-  return (
-    <div className={styles.toDo}>
-      <ToDoItems blocks={block.ListItems} />
-    </div>
-  )
 }
 
 const BulletedListItems = ({ blocks }) =>
@@ -252,13 +271,13 @@ const BulletedListItems = ({ blocks }) =>
         ))}
         {listItem.HasChildren ? (
           <ul>
-            <BulletedListItems blocks={listItem.BulletedListItem.Children} />
+            <ListBlocks blocks={listItem.BulletedListItem.Children} />
           </ul>
         ) : null}
       </li>
     ))
 
-const NumberedListItems = ({ blocks, level = 1 }) =>
+const NumberedListItems = ({ blocks }) =>
   blocks
     .filter((b: interfaces.Block) => b.Type === 'numbered_list_item')
     .map((listItem: interfaces.Block) => (
@@ -273,28 +292,11 @@ const NumberedListItems = ({ blocks, level = 1 }) =>
           />
         ))}
         {listItem.HasChildren ? (
-          level % 3 === 0 ? (
             <ol type="1">
-              <NumberedListItems
+              <ListBlocks
                 blocks={listItem.NumberedListItem.Children}
-                level={level + 1}
               />
             </ol>
-          ) : level % 3 === 1 ? (
-            <ol type="a">
-              <NumberedListItems
-                blocks={listItem.NumberedListItem.Children}
-                level={level + 1}
-              />
-            </ol>
-          ) : (
-            <ol type="i">
-              <NumberedListItems
-                blocks={listItem.NumberedListItem.Children}
-                level={level + 1}
-              />
-            </ol>
-          )
         ) : null}
       </li>
     ))
@@ -304,16 +306,18 @@ const ToDoItems = ({ blocks }) =>
     .filter((b: interfaces.Block) => b.Type === 'to_do')
     .map((listItem: interfaces.Block) => (
       <div key={`to-do-item-${listItem.Id}`}>
-        <input type="checkbox" defaultChecked={listItem.ToDo.Checked} />
+        <input type="checkbox" readOnly checked={listItem.ToDo.Checked} />
+        <span>
         {listItem.ToDo.RichTexts.map((richText: interfaces.RichText, i: number) => (
           <RichText
             richText={richText}
             key={`to-do-item-${listItem.Id}-${i}`}
           />
         ))}
+        </span>
         {listItem.HasChildren ? (
           <ul>
-            <ToDoItems blocks={listItem.ToDo.Children} />
+            <ListBlocks blocks={listItem.ToDo.Children} />
           </ul>
         ) : null}
       </div>
@@ -335,7 +339,9 @@ const Toggle = ({ block }) => (
 )
 
 const NotionBlock = ({ block, blocks }) => {
-  if (block.Type === 'paragraph') {
+  if (block.Type === 'child_page') {
+    return <ChildPage block={block} />
+  } else if (block.Type === 'paragraph') {
     return <Paragraph block={block} />
   } else if (block.Type === 'heading_1') {
     return <Heading1 block={block} />
@@ -359,6 +365,8 @@ const NotionBlock = ({ block, blocks }) => {
     return <Callout block={block} />
   } else if (block.Type === 'embed') {
     return <Embed block={block} />
+  } else if (block.Type === 'pdf') {
+    return <Pdf block={block} />
   } else if (block.Type === 'bookmark' || block.Type === 'link_preview') {
     return <Bookmark block={block} />
   } else if (block.Type === 'divider') {
@@ -379,6 +387,14 @@ const NotionBlock = ({ block, blocks }) => {
 }
 
 const NotionBlocks = ({ blocks }) => (
+  <>
+    {wrapListItems(blocks).map((block: interfaces.Block, i: number) => (
+      <NotionBlock block={block} blocks={blocks} key={`block-${i}`} />
+    ))}
+  </>
+)
+
+const ListBlocks =({ blocks }) => (
   <>
     {wrapListItems(blocks).map((block: interfaces.Block, i: number) => (
       <NotionBlock block={block} blocks={blocks} key={`block-${i}`} />

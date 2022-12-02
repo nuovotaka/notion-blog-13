@@ -7,6 +7,7 @@ export interface Post {
   Excerpt: string
   OGImage: string
   Rank: number
+  Like: number
 }
 
 export interface Block {
@@ -14,6 +15,7 @@ export interface Block {
   Type: string
   HasChildren: boolean
 
+  ChildPage?: ChildPage
   Paragraph?: Paragraph
   Heading1?: Heading1
   Heading2?: Heading2
@@ -30,11 +32,17 @@ export interface Block {
   Toggle?: Toggle
   Embed?: Embed
   Video?: Video
+  Pdf?: Pdf
   Bookmark?: Bookmark
   LinkPreview?: LinkPreview
   Table?: Table
   ColumnList?: ColumnList
   TableOfContents?: TableOfContents
+}
+
+export interface ChildPage {
+  Title: string
+  Children: Block[]
 }
 
 export interface Paragraph {
@@ -88,6 +96,7 @@ export interface Image {
 
 export interface Video {
   Type: string
+  File?: File
   External?: External
 }
 
@@ -138,6 +147,14 @@ export interface Toggle {
 
 export interface Embed {
   Url: string
+}
+
+export interface Pdf {
+  Type: string
+  File?: File
+  External?: External
+  Url?: string
+  ExpiryTime?: string
 }
 
 export interface Bookmark {
@@ -192,6 +209,7 @@ export interface RichText {
   PlainText: string
   Href?: string
   Equation?: Equation
+  Mention?: Mention
 }
 
 export interface Text {
@@ -214,4 +232,20 @@ export interface Annotation {
 
 export interface Link {
   Url: string
+}
+
+export interface Mention {
+  Type: string
+  Page?: MentionPage
+  Date?: MentionDate
+  LinkPreview?: LinkPreview
+}
+
+export interface MentionPage {
+  Id: string
+}
+
+export interface MentionDate {
+  Start?: string
+  End?: null|string
 }

@@ -31,6 +31,23 @@ if (!DATABASE_ID) {
 }
 
 module.exports = {
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/blog',
+        permanent: true,
+      },
+    ]
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/blog',
+        destination: '/',
+      },
+    ]
+  },
   images: {
     domains: ['s3.us-west-2.amazonaws.com', 'images.unsplash.com'],
   },

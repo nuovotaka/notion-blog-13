@@ -23,6 +23,8 @@ import {
   getAllTags,
   getAllBlocksByBlockId,
 } from '../../../lib/notion/client'
+import LikeButton from '../../../components/like-button'
+import TocLink from '../../../components/toc'
 
 export const revalidate = 30
 // TODO: Enable after fixed https://github.com/vercel/next.js/issues/43357
@@ -62,7 +64,7 @@ const BlogSlugPage = async ({ params: { slug } }) => {
       <GoogleAnalytics pageTitle={post.Title} />
       <div className={styles.container}>
         <div className={styles.mainContent}>
-          <div className={styles.post}>
+          <div className={styles.blogpost}>
             <PostDate post={post} />
             <PostTags post={post} />
             <PostTitle post={post} enableLink={false} />
@@ -81,6 +83,7 @@ const BlogSlugPage = async ({ params: { slug } }) => {
                   id={post.Slug}
                 />
               )}
+              <LikeButton slug={post.Slug} like={post.Like} />
             </footer>
           </div>
         </div>
@@ -93,6 +96,7 @@ const BlogSlugPage = async ({ params: { slug } }) => {
           <BlogPostLink heading="Recommended" posts={rankedPosts} />
           <BlogPostLink heading="Latest posts" posts={recentPosts} />
           <BlogTagLink heading="Categories" tags={tags} />
+          <TocLink blocks={blocks}/>
         </div>
       </div>
     </>

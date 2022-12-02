@@ -1,6 +1,6 @@
 'use client'
 
-import 'katex/dist/katex.min.scss'
+import 'katex/dist/katex.min.css'
 import { BlockMath } from 'react-katex'
 
 import styles from '../../styles/notion-block.module.scss'

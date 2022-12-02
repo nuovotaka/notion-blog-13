@@ -9,7 +9,6 @@ import {
   PostExcerpt,
   PostTags,
   PostTitle,
-  ReadMoreLink,
 } from '../../../../components/blog-parts'
 import styles from '../../../../styles/blog.module.scss'
 import {
@@ -54,6 +53,7 @@ const BlogTagPage = async ({ params: { tag: encodedTag } }) => {
             <h2>{tag}</h2>
           </header>
 
+          <div className={styles.template}>
           {posts.map(post => {
             return (
               <div className={styles.post} key={post.Slug}>
@@ -61,10 +61,11 @@ const BlogTagPage = async ({ params: { tag: encodedTag } }) => {
                 <PostTags post={post} />
                 <PostTitle post={post} />
                 <PostExcerpt post={post} />
-                <ReadMoreLink post={post} />
+                {/* <ReadMoreLink post={post} /> */}
               </div>
             )
           })}
+          </div>
 
           <footer>
             <NextPageLink firstPost={firstPost} posts={posts} tag={tag} />

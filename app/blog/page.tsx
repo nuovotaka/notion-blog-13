@@ -9,9 +9,9 @@ import {
   PostExcerpt,
   PostTags,
   PostTitle,
-  ReadMoreLink,
 } from '../../components/blog-parts'
 import styles from '../../styles/blog.module.scss'
+import Mystyles from '../../styles/mystyles.module.scss'
 import {
   getPosts,
   getFirstPost,
@@ -36,6 +36,7 @@ const BlogPage = async () => {
         <div className={styles.mainContent}>
           <NoContents contents={posts} />
 
+          <div className={styles.template}>
           {posts.map(post => {
             return (
               <div className={styles.post} key={post.Slug}>
@@ -43,13 +44,16 @@ const BlogPage = async () => {
                 <PostTags post={post} />
                 <PostTitle post={post} />
                 <PostExcerpt post={post} />
-                <ReadMoreLink post={post} />
+                {/* <ReadMoreLink post={post} /> */}
               </div>
             )
           })}
+          </div>
 
           <footer>
-            <NextPageLink firstPost={firstPost} posts={posts} />
+            <div className={Mystyles.nextPageLink}>
+              <NextPageLink firstPost={firstPost} posts={posts} />
+            </div>
           </footer>
         </div>
 
