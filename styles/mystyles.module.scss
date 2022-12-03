@@ -89,3 +89,52 @@
   background-color: var(--bg);
   border: none;
 }
+
+// pagination
+.pageNumbers {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding-left: 0;
+  font-family: --font-mono;
+
+  > li {
+    font-size: 1.8rem;
+    margin: 0 3px;
+    // padding: 10px;
+    outline: none;
+    font-weight: 500;
+    border-radius: 5px;
+    cursor: pointer;
+
+    >span {
+      display: block;
+    }
+
+    &.active {
+      background-color: var(--accents-4);
+      color: var(--accents-2);
+    }
+
+    button {
+      background-color: transparent;
+      border: none;
+      color: var(--fg);
+      font-size: 1rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--bg);
+        color: var(--accents-2);
+      }
+
+      &:focus {
+        outline: none;
+      }
+
+    }
+    :disabled {
+      display: none;
+    }
+  }
+}
