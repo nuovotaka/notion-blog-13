@@ -27,8 +27,7 @@ import LikeButton from '../../../components/like-button'
 import TocLink from '../../../components/toc'
 
 export const revalidate = 30
-// TODO: Enable after fixed https://github.com/vercel/next.js/issues/43357
-// export const dynamicParams = false
+export const dynamicParams = false
 
 export async function generateStaticParams() {
   const posts = await getAllPosts()
