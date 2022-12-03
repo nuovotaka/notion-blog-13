@@ -9,7 +9,6 @@ import {
   getPosts,
   getRankedPosts,
   getPostsByTag,
-  getFirstPostByTag,
   getAllTags,
 } from '../../../../lib/notion/client'
 import PaginationTag from '../../../../components/pagination-tag'
