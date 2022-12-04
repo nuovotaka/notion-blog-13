@@ -12,7 +12,7 @@ import {
   getAllTags,
   getAllPosts,
 } from '../../lib/notion/client'
-import PaginationPosts from '../../components/pagination-posts'
+import Pagination from '../../components/pagination'
 
 export const revalidate = 60
 
@@ -31,7 +31,7 @@ const BlogPage = async () => {
         <div className={styles.mainContent}>
           <NoContents contents={posts} />
 
-          <PaginationPosts allposts={allposts} perpage={NUMBER_OF_POSTS_PER_PAGE} />
+          <Pagination allItems={allposts} perpage={NUMBER_OF_POSTS_PER_PAGE} />
         </div>
 
         <div className={styles.subContent}>

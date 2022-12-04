@@ -11,7 +11,8 @@ import {
   getPostsByTag,
   getAllTags,
 } from '../../../../lib/notion/client'
-import PaginationTag from '../../../../components/pagination-tag'
+import Pagination from '../../../../components/pagination'
+import { NUMBER_OF_POSTS_PER_PAGE } from '../../../server-constants'
 
 export const revalidate = 60
 
@@ -46,7 +47,7 @@ const BlogTagPage = async ({ params: { tag: encodedTag } }) => {
             <h2>{tag}</h2>
           </header>
 
-          <PaginationTag posts={posts} />
+          <Pagination allItems={posts} perpage={NUMBER_OF_POSTS_PER_PAGE} />
         </div>
 
         <div className={styles.subContent}>

@@ -24,7 +24,7 @@ const renderData = (data) => {
   )
 }
 
-const PaginationPosts = ({ allposts, perpage }) => {
+const Pagination = ({ allItems, perpage }) => {
   const [currentPage, setcurrentPage] = useState(1);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [itemsPerPage, setitemsPerPage] = useState(perpage);
@@ -33,8 +33,6 @@ const PaginationPosts = ({ allposts, perpage }) => {
   const [pageNumberLimit, setpageNumberLimit] = useState(5);
   const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(5);
   const [minPageNumberLimit, setminPageNumberLimit] = useState(0);
-
-  const allItems = allposts
 
   const handleClick = (event) => {
     setcurrentPage(Number(event.target.id));
@@ -127,4 +125,4 @@ const PaginationPosts = ({ allposts, perpage }) => {
   );
 }
 
-export default PaginationPosts
+export default Pagination

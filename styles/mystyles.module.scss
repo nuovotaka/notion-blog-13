@@ -114,6 +114,8 @@
     &.active {
       background-color: var(--accents-4);
       color: var(--accents-2);
+      border: 1px solid;
+      border-color: var(--active-color)
     }
 
     button {
