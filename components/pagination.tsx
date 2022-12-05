@@ -38,7 +38,7 @@ const Pagination = ({ allItems, perpage }) => {
 
   const handleClick = (event) => {
     const newCurrentPage = {...currentPage}
-    newCurrentPage.id = Number(event.target.id)
+    newCurrentPage.page = Number(event.target.id)
     setCurrentPage(newCurrentPage);
   };
 
@@ -47,7 +47,7 @@ const Pagination = ({ allItems, perpage }) => {
     pages.push(i);
   }
 
-  const indexOfLastItem = currentPage.id * itemsPerPage;
+  const indexOfLastItem = currentPage.page * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = allItems.slice(indexOfFirstItem, indexOfLastItem);
 
@@ -58,7 +58,7 @@ const Pagination = ({ allItems, perpage }) => {
           key={number}
           id={number}
           onClick={handleClick}
-          className={currentPage.id == number ? `${Mystyles.active}` : null}
+          className={currentPage.page == number ? `${Mystyles.active}` : null}
         >
           {number}
         </li>
@@ -70,10 +70,10 @@ const Pagination = ({ allItems, perpage }) => {
 
   const handleNextbtn = () => {
     const newCurrentPage = {...currentPage}
-    newCurrentPage.id = currentPage.id + 1
+    newCurrentPage.page = currentPage.page + 1
     setCurrentPage(newCurrentPage)
 
-    if (currentPage.id + 1 > maxPageNumberLimit) {
+    if (currentPage.page + 1 > maxPageNumberLimit) {
       setmaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
       setminPageNumberLimit(minPageNumberLimit + pageNumberLimit);
     }
@@ -81,10 +81,10 @@ const Pagination = ({ allItems, perpage }) => {
 
   const handlePrevbtn = () => {
     const newCurrentPage = {...currentPage}
-    newCurrentPage.id = currentPage.id -1
+    newCurrentPage.page = currentPage.page -1
     setCurrentPage(newCurrentPage)
 
-    if ((currentPage.id - 1) % pageNumberLimit == 0) {
+    if ((currentPage.page - 1) % pageNumberLimit == 0) {
       setmaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
       setminPageNumberLimit(minPageNumberLimit - pageNumberLimit);
     }
@@ -109,7 +109,7 @@ const Pagination = ({ allItems, perpage }) => {
           <li>
             <button
               onClick={handlePrevbtn}
-              disabled={currentPage.id == pages[0] ? true : false}
+              disabled={currentPage.page == pages[0] ? true : false}
             >
               ＜
             </button>
@@ -121,7 +121,7 @@ const Pagination = ({ allItems, perpage }) => {
           <li>
             <button
               onClick={handleNextbtn}
-              disabled={currentPage.id == pages[pages.length - 1] ? true : false}
+              disabled={currentPage.page == pages[pages.length - 1] ? true : false}
             >
               ＞
             </button>
