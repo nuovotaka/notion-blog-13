@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { PostDate, PostExcerpt, PostTags, PostTitle } from './blog-parts'
 import styles from '../styles/blog.module.scss'
 import Mystyles from '../styles/mystyles.module.scss'
+import { useStaticState } from '../lib/state-manage'
 
 const renderData = (data) => {
   return (
@@ -25,7 +26,8 @@ const renderData = (data) => {
 }
 
 const Pagination = ({ allItems, perpage }) => {
-  const [currentPage, setcurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useStaticState('currentPage')
+  // const [currentPage, setcurrentPage] = useState(1);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [itemsPerPage, setitemsPerPage] = useState(perpage);
 
@@ -35,7 +37,9 @@ const Pagination = ({ allItems, perpage }) => {
   const [minPageNumberLimit, setminPageNumberLimit] = useState(0);
 
   const handleClick = (event) => {
-    setcurrentPage(Number(event.target.id));
+    const newCurrentPage = {...currentPage}
+    newCurrentPage.id = Number(event.target.id)
+    setCurrentPage(newCurrentPage);
   };
 
   const pages = [];
@@ -43,7 +47,7 @@ const Pagination = ({ allItems, perpage }) => {
     pages.push(i);
   }
 
-  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfLastItem = currentPage.id * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = allItems.slice(indexOfFirstItem, indexOfLastItem);
 
@@ -54,7 +58,7 @@ const Pagination = ({ allItems, perpage }) => {
           key={number}
           id={number}
           onClick={handleClick}
-          className={currentPage == number ? `${Mystyles.active}` : null}
+          className={currentPage.id == number ? `${Mystyles.active}` : null}
         >
           {number}
         </li>
@@ -65,18 +69,22 @@ const Pagination = ({ allItems, perpage }) => {
   });
 
   const handleNextbtn = () => {
-    setcurrentPage(currentPage + 1);
+    const newcurrentPage = currentPage.id + 1
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    setCurrentPage(newcurrentPage as any)
 
-    if (currentPage + 1 > maxPageNumberLimit) {
+    if (currentPage.id + 1 > maxPageNumberLimit) {
       setmaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
       setminPageNumberLimit(minPageNumberLimit + pageNumberLimit);
     }
   };
 
   const handlePrevbtn = () => {
-    setcurrentPage(currentPage - 1);
+    const newcurrentPage = currentPage.id -1
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    setCurrentPage(newcurrentPage as any)
 
-    if ((currentPage - 1) % pageNumberLimit == 0) {
+    if ((currentPage.id - 1) % pageNumberLimit == 0) {
       setmaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
       setminPageNumberLimit(minPageNumberLimit - pageNumberLimit);
     }
@@ -101,7 +109,7 @@ const Pagination = ({ allItems, perpage }) => {
           <li>
             <button
               onClick={handlePrevbtn}
-              disabled={currentPage == pages[0] ? true : false}
+              disabled={currentPage.id == pages[0] ? true : false}
             >
               ＜
             </button>
@@ -113,7 +121,7 @@ const Pagination = ({ allItems, perpage }) => {
           <li>
             <button
               onClick={handleNextbtn}
-              disabled={currentPage == pages[pages.length - 1] ? true : false}
+              disabled={currentPage.id == pages[pages.length - 1] ? true : false}
             >
               ＞
             </button>
