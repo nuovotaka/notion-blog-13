@@ -4,7 +4,8 @@ import Mystyles from '../styles/mystyles.module.scss'
 import { FaHome, FaUser, FaLink } from 'react-icons/fa'
 import { MdPrivacyTip } from 'react-icons/md'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { redirect, usePathname } from 'next/navigation'
+import { useStaticState } from '../lib/state-manage'
 
 
 interface NavItem {
@@ -15,6 +16,14 @@ interface NavItem {
 
 const BottomNav = () => {
   const pathname = usePathname()
+  const [currentPage,] = useStaticState('currentPage')
+
+  const handlerCurrentPage = () => {
+    if (pathname === '/blog') {
+      currentPage.id = 1
+      redirect('/blog')
+    }
+  }
 
   const navItems: NavItem[] = [
     { label: 'Home', path: '/blog' , icon: <FaHome size={20} color={'#999'} /> },
@@ -28,7 +37,7 @@ const BottomNav = () => {
       <ul>
         {navItems.map(({ label, path , icon}) => (
           <li key={label}>
-            <Link href={path} className={pathname === path ? 'active' : null}>
+            <Link href={path} className={pathname === path ? 'active' : null} onClick={handlerCurrentPage} >
               {icon}<br/>
               {label}
             </Link>
