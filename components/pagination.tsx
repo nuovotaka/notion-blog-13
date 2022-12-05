@@ -69,9 +69,9 @@ const Pagination = ({ allItems, perpage }) => {
   });
 
   const handleNextbtn = () => {
-    const newcurrentPage = currentPage.id + 1
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setCurrentPage(newcurrentPage as any)
+    const newCurrentPage = {...currentPage}
+    newCurrentPage.id = currentPage.id + 1
+    setCurrentPage(newCurrentPage)
 
     if (currentPage.id + 1 > maxPageNumberLimit) {
       setmaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
@@ -80,9 +80,9 @@ const Pagination = ({ allItems, perpage }) => {
   };
 
   const handlePrevbtn = () => {
-    const newcurrentPage = currentPage.id -1
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setCurrentPage(newcurrentPage as any)
+    const newCurrentPage = {...currentPage}
+    newCurrentPage.id = currentPage.id -1
+    setCurrentPage(newCurrentPage)
 
     if ((currentPage.id - 1) % pageNumberLimit == 0) {
       setmaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
