@@ -38,7 +38,7 @@ const Pagination = ({ allItems, perpage }) => {
 
   const handleClick = (event) => {
     const newCurrentPage = {...currentPage}
-    newCurrentPage.id = Number(event.target.id)
+    newCurrentPage.page = Number(event.target.id)
     setCurrentPage(newCurrentPage);
   };
 
@@ -47,7 +47,7 @@ const Pagination = ({ allItems, perpage }) => {
     pages.push(i);
   }
 
-  const indexOfLastItem = currentPage.id * itemsPerPage;
+  const indexOfLastItem = currentPage.page * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = allItems.slice(indexOfFirstItem, indexOfLastItem);
 
@@ -58,9 +58,9 @@ const Pagination = ({ allItems, perpage }) => {
           key={number}
           id={number}
           onClick={handleClick}
-          className={currentPage.id == number ? `${Mystyles.active}` : null}
+          className={currentPage.page == number ? `${Mystyles.pagination_active}` : null}
         >
-          {number}
+          <span className={Mystyles.pagination_link}>{number}</span>
         </li>
       );
     } else {
@@ -70,10 +70,10 @@ const Pagination = ({ allItems, perpage }) => {
 
   const handleNextbtn = () => {
     const newCurrentPage = {...currentPage}
-    newCurrentPage.id = currentPage.id + 1
+    newCurrentPage.page = currentPage.page + 1
     setCurrentPage(newCurrentPage)
 
-    if (currentPage.id + 1 > maxPageNumberLimit) {
+    if (currentPage.page + 1 > maxPageNumberLimit) {
       setmaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
       setminPageNumberLimit(minPageNumberLimit + pageNumberLimit);
     }
@@ -81,10 +81,10 @@ const Pagination = ({ allItems, perpage }) => {
 
   const handlePrevbtn = () => {
     const newCurrentPage = {...currentPage}
-    newCurrentPage.id = currentPage.id -1
+    newCurrentPage.page = currentPage.page -1
     setCurrentPage(newCurrentPage)
 
-    if ((currentPage.id - 1) % pageNumberLimit == 0) {
+    if ((currentPage.page - 1) % pageNumberLimit == 0) {
       setmaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
       setminPageNumberLimit(minPageNumberLimit - pageNumberLimit);
     }
@@ -92,42 +92,48 @@ const Pagination = ({ allItems, perpage }) => {
 
   let pageIncrementBtn = null;
   if (pages.length > maxPageNumberLimit) {
-    pageIncrementBtn = <li onClick={handleNextbtn}> &hellip; </li>;
+    pageIncrementBtn =
+      <li onClick={handleNextbtn}>
+        <span className={Mystyles.pagination_link}> &hellip; </span>
+      </li>;
   }
 
   let pageDecrementBtn = null;
   if (minPageNumberLimit >= 1) {
-    pageDecrementBtn = <li onClick={handlePrevbtn}> &hellip; </li>;
+    pageDecrementBtn =
+      <li onClick={handlePrevbtn}>
+        <span className={Mystyles.pagination_link}> &hellip; </span>
+      </li>;
   }
 
   return (
     <>
       {renderData(currentItems)}
       <footer>
-        {/* <div className={Mystyles.nextPageLink}> */}
-        <ul className={Mystyles.pageNumbers}>
-          <li>
-            <button
-              onClick={handlePrevbtn}
-              disabled={currentPage.id == pages[0] ? true : false}
-            >
-              ＜
-            </button>
-          </li>
-          {pageDecrementBtn}
-          {renderPageNumbers}
-          {pageIncrementBtn}
+        <nav className={Mystyles.navpagination}>
+          <ul className={Mystyles.pagination}>
+            <li>
+              <button
+                onClick={handlePrevbtn}
+                disabled={currentPage.page == pages[0] ? true : false}
+              >
+                <span className={Mystyles.pagination_link}>＜</span>
+              </button>
+            </li>
+            {pageDecrementBtn}
+            {renderPageNumbers}
+            {pageIncrementBtn}
 
-          <li>
-            <button
-              onClick={handleNextbtn}
-              disabled={currentPage.id == pages[pages.length - 1] ? true : false}
-            >
-              ＞
-            </button>
-          </li>
-        </ul>
-        {/* </div> */}
+            <li>
+              <button
+                onClick={handleNextbtn}
+                disabled={currentPage.page == pages[pages.length - 1] ? true : false}
+              >
+                <span className={Mystyles.pagination_link}>＞</span>
+              </button>
+            </li>
+          </ul>
+        </nav>
       </footer>
     </>
   );

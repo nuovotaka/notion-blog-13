@@ -91,33 +91,33 @@
 }
 
 // pagination
-.pageNumbers {
-  list-style: none;
+.navpagination {
   display: flex;
   justify-content: center;
-  padding-left: 0;
-  font-family: --font-mono;
 
-  > li {
-    font-size: 1.8rem;
-    margin: 0 3px;
-    // padding: 10px;
-    outline: none;
-    font-weight: 500;
-    border-radius: 5px;
+  .pagination {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    column-gap: 3px;
+    font-family: --font-mono;
     cursor: pointer;
 
-    >span {
-      display: block;
-    }
+    >li {
+      border-radius: 5px;
+      font-weight: 500;
+      width: 30px;
+      text-align: center;
 
-    &.active {
-      background-color: var(--accents-4);
-      color: var(--accents-2);
-      border: 1px solid;
-      border-color: var(--active-color)
+      >.pagination_link {
+        outline: none;
+      }
+      &:hover {
+        background-color: var(--bg);
+        color: var(--accents-2);
+      }
     }
-
     button {
       background-color: transparent;
       border: none;
@@ -134,9 +134,21 @@
         outline: none;
       }
 
+      &:disabled {
+        display: none;
+      }
     }
-    :disabled {
-      display: none;
+    .pagination_active {
+      background-color: var(--accents-4);
+      border-radius: 5px;
+      color: var(--accents-2);
+      border: 1px solid;
+      border-color: var(--active-color)
     }
+    
+  }
+  
+  > .pagination_item:not(:last-child) {
+    margin-right: 10px;
   }
 }

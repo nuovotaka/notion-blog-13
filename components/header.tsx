@@ -29,7 +29,7 @@ const Header = () => {
 
   const handlerCurrentPage = () => {
     if (pathname === '/blog') {
-      currentPage.id = 1
+      currentPage.page = 1
       redirect('/blog')
     }
   }
