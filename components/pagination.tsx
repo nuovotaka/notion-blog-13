@@ -36,10 +36,9 @@ const Pagination = ({ allItems, perpage }) => {
   const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(5);
   const [minPageNumberLimit, setminPageNumberLimit] = useState(0);
 
-  const handleClick = (event) => {
-    const newCurrentPage = {...currentPage}
-    newCurrentPage.page = Number(event.target.innerText)
-    setCurrentPage(newCurrentPage);
+  const handleClick = (e) => {
+    currentPage.page = Number(e.currentTarget.id)
+    setCurrentPage(currentPage);
   };
 
   const pages = [];
@@ -69,25 +68,19 @@ const Pagination = ({ allItems, perpage }) => {
   });
 
   const handleNextbtn = () => {
-    const newCurrentPage = {...currentPage}
-    newCurrentPage.page = currentPage.page + 1
-    setCurrentPage(newCurrentPage)
-
     if (currentPage.page + 1 > maxPageNumberLimit) {
       setmaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
       setminPageNumberLimit(minPageNumberLimit + pageNumberLimit);
     }
+    setCurrentPage({page: ++currentPage.page})
   };
 
   const handlePrevbtn = () => {
-    const newCurrentPage = {...currentPage}
-    newCurrentPage.page = currentPage.page -1
-    setCurrentPage(newCurrentPage)
-
     if ((currentPage.page - 1) % pageNumberLimit == 0) {
       setmaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
       setminPageNumberLimit(minPageNumberLimit - pageNumberLimit);
     }
+    setCurrentPage({page: --currentPage.page})
   };
 
   let pageIncrementBtn = null;
