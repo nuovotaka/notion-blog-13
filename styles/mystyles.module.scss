@@ -100,13 +100,15 @@
     margin: 0;
     padding: 0;
     display: flex;
-    column-gap: 8px;
+    column-gap: 3px;
     font-family: --font-mono;
     cursor: pointer;
 
     >li {
       border-radius: 5px;
       font-weight: 500;
+      width: 30px;
+      text-align: center;
 
       >.pagination_link {
         outline: none;

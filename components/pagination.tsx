@@ -60,7 +60,7 @@ const Pagination = ({ allItems, perpage }) => {
           onClick={handleClick}
           className={currentPage.page == number ? `${Mystyles.pagination_active}` : null}
         >
-          {number}
+          <span className={Mystyles.pagination_link}>{number}</span>
         </li>
       );
     } else {
@@ -92,12 +92,18 @@ const Pagination = ({ allItems, perpage }) => {
 
   let pageIncrementBtn = null;
   if (pages.length > maxPageNumberLimit) {
-    pageIncrementBtn = <li onClick={handleNextbtn}><span> &hellip; </span></li>;
+    pageIncrementBtn =
+      <li onClick={handleNextbtn}>
+        <span className={Mystyles.pagination_link}> &hellip; </span>
+      </li>;
   }
 
   let pageDecrementBtn = null;
   if (minPageNumberLimit >= 1) {
-    pageDecrementBtn = <li onClick={handlePrevbtn}><span> &hellip; </span></li>;
+    pageDecrementBtn =
+      <li onClick={handlePrevbtn}>
+        <span className={Mystyles.pagination_link}> &hellip; </span>
+      </li>;
   }
 
   return (
@@ -111,7 +117,7 @@ const Pagination = ({ allItems, perpage }) => {
                 onClick={handlePrevbtn}
                 disabled={currentPage.page == pages[0] ? true : false}
               >
-                <span>＜</span>
+                <span className={Mystyles.pagination_link}>＜</span>
               </button>
             </li>
             {pageDecrementBtn}
@@ -123,7 +129,7 @@ const Pagination = ({ allItems, perpage }) => {
                 onClick={handleNextbtn}
                 disabled={currentPage.page == pages[pages.length - 1] ? true : false}
               >
-                <span>＞</span>
+                <span className={Mystyles.pagination_link}>＞</span>
               </button>
             </li>
           </ul>
