@@ -58,7 +58,7 @@ const Pagination = ({ allItems, perpage }) => {
           key={number}
           id={number}
           onClick={handleClick}
-          className={currentPage.page == number ? `${Mystyles.active}` : null}
+          className={currentPage.page == number ? `${Mystyles.pagination_active}` : null}
         >
           {number}
         </li>
@@ -92,42 +92,42 @@ const Pagination = ({ allItems, perpage }) => {
 
   let pageIncrementBtn = null;
   if (pages.length > maxPageNumberLimit) {
-    pageIncrementBtn = <li onClick={handleNextbtn}> &hellip; </li>;
+    pageIncrementBtn = <li onClick={handleNextbtn}><span> &hellip; </span></li>;
   }
 
   let pageDecrementBtn = null;
   if (minPageNumberLimit >= 1) {
-    pageDecrementBtn = <li onClick={handlePrevbtn}> &hellip; </li>;
+    pageDecrementBtn = <li onClick={handlePrevbtn}><span> &hellip; </span></li>;
   }
 
   return (
     <>
       {renderData(currentItems)}
       <footer>
-        {/* <div className={Mystyles.nextPageLink}> */}
-        <ul className={Mystyles.pageNumbers}>
-          <li>
-            <button
-              onClick={handlePrevbtn}
-              disabled={currentPage.page == pages[0] ? true : false}
-            >
-              ＜
-            </button>
-          </li>
-          {pageDecrementBtn}
-          {renderPageNumbers}
-          {pageIncrementBtn}
+        <nav className={Mystyles.navpagination}>
+          <ul className={Mystyles.pagination}>
+            <li>
+              <button
+                onClick={handlePrevbtn}
+                disabled={currentPage.page == pages[0] ? true : false}
+              >
+                <span>＜</span>
+              </button>
+            </li>
+            {pageDecrementBtn}
+            {renderPageNumbers}
+            {pageIncrementBtn}
 
-          <li>
-            <button
-              onClick={handleNextbtn}
-              disabled={currentPage.page == pages[pages.length - 1] ? true : false}
-            >
-              ＞
-            </button>
-          </li>
-        </ul>
-        {/* </div> */}
+            <li>
+              <button
+                onClick={handleNextbtn}
+                disabled={currentPage.page == pages[pages.length - 1] ? true : false}
+              >
+                <span>＞</span>
+              </button>
+            </li>
+          </ul>
+        </nav>
       </footer>
     </>
   );
