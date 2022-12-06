@@ -5,6 +5,8 @@ import { PostDate, PostExcerpt, PostTags, PostTitle } from './blog-parts'
 import styles from '../styles/blog.module.scss'
 import Mystyles from '../styles/mystyles.module.scss'
 import { useStaticState } from '../lib/state-manage'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 const renderData = (data) => {
   return (
@@ -26,6 +28,7 @@ const renderData = (data) => {
 }
 
 const Pagination = ({ allItems, perpage }) => {
+  const pathname = usePathname()
   const [currentPage, setCurrentPage] = useStaticState('currentPage')
   // const [currentPage, setcurrentPage] = useState(1);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -59,7 +62,9 @@ const Pagination = ({ allItems, perpage }) => {
           onClick={handleClick}
           className={currentPage.page == number ? `${Mystyles.pagination_active}` : null}
         >
-          <span className={Mystyles.pagination_link}>{number}</span>
+          <Link href={'#'} as={`${pathname}?page=${number}`}>
+            <span className={Mystyles.pagination_link}>{number}</span>
+          </Link>
         </li>
       );
     } else {

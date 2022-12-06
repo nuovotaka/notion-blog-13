@@ -117,6 +117,9 @@
         background-color: var(--bg);
         color: var(--accents-2);
       }
+      a {
+        color: inherit;
+      }
     }
     button {
       background-color: transparent;
