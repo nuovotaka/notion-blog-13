@@ -38,7 +38,7 @@ const Pagination = ({ allItems, perpage }) => {
 
   const handleClick = (e) => {
     currentPage.page = Number(e.currentTarget.id)
-    setCurrentPage(currentPage);
+    setCurrentPage({page: currentPage.page});
   };
 
   const pages = [];
@@ -68,19 +68,23 @@ const Pagination = ({ allItems, perpage }) => {
   });
 
   const handleNextbtn = () => {
+    const newcurrentPage = {...currentPage}
+    setCurrentPage({page: ++newcurrentPage.page})
+
     if (currentPage.page + 1 > maxPageNumberLimit) {
       setmaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
       setminPageNumberLimit(minPageNumberLimit + pageNumberLimit);
     }
-    setCurrentPage({page: ++currentPage.page})
   };
 
   const handlePrevbtn = () => {
+    const newcurrentPage = {...currentPage}
+    setCurrentPage({page: --newcurrentPage.page})
+
     if ((currentPage.page - 1) % pageNumberLimit == 0) {
       setmaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
       setminPageNumberLimit(minPageNumberLimit - pageNumberLimit);
     }
-    setCurrentPage({page: --currentPage.page})
   };
 
   let pageIncrementBtn = null;
