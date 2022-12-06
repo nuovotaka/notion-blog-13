@@ -38,7 +38,7 @@ const Pagination = ({ allItems, perpage }) => {
 
   const handleClick = (event) => {
     const newCurrentPage = {...currentPage}
-    newCurrentPage.page = Number(event.target.id)
+    newCurrentPage.page = Number(event.target.innerText)
     setCurrentPage(newCurrentPage);
   };
 
