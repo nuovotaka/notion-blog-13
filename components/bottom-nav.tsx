@@ -4,7 +4,7 @@ import Mystyles from '../styles/mystyles.module.scss'
 import { FaHome, FaUser, FaLink } from 'react-icons/fa'
 import { MdPrivacyTip } from 'react-icons/md'
 import Link from 'next/link'
-import { redirect, usePathname } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 // import { useStaticState } from '../lib/state-manage'
 
 
