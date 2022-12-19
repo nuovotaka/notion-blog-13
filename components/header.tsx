@@ -1,6 +1,6 @@
 'use client'
 
-import { redirect, usePathname } from "next/navigation"
+import { usePathname } from "next/navigation"
 import Link from 'next/link'
 import { NEXT_PUBLIC_SITE_TITLE } from '../app/server-constants'
 import ModeSwitch from './mode-switch'
@@ -8,7 +8,7 @@ import { FaHome, FaLink, FaUser } from 'react-icons/fa'
 import { MdPrivacyTip } from 'react-icons/md'
 
 import styles from '../styles/header.module.scss'
-import { useStaticState } from "../lib/state-manage"
+// import { useStaticState } from "../lib/state-manage"
 
 interface NavItem {
   label: string
@@ -25,14 +25,14 @@ interface ItemCSS extends React.CSSProperties {
 
 const Header = () => {
   const pathname = usePathname()
-  const [currentPage,] = useStaticState('currentPage')
+  // const [currentPage,] = useStaticState('currentPage')
 
-  const handlerCurrentPage = () => {
-    if (pathname === '/blog') {
-      currentPage.page = 1
-      redirect('/blog')
-    }
-  }
+  // const handlerCurrentPage = () => {
+  //   if (pathname === '/blog') {
+  //     currentPage.page = 1
+  //     redirect('/blog')
+  //   }
+  // }
 
   const navItems: NavItem[] = [
     { label: 'Home', path: '/blog' , icon: <FaHome color={'#999'} />, color1: '#ff9966', color2: '#ff5e62' },
@@ -45,7 +45,7 @@ const Header = () => {
   return (
     <>
       <h1 className={styles.siteheader}>
-        <Link href="/blog" onClick={handlerCurrentPage}>
+        <Link href="/blog" >
           {NEXT_PUBLIC_SITE_TITLE}
         </Link>
       </h1>
@@ -55,7 +55,7 @@ const Header = () => {
             <li style={{'--i': color1, '--j': color2} as ItemCSS} key={label} >
               <span className={styles.icon}>{icon}</span>
               <span className={styles.title}>
-                <Link href={path} className={pathname === path ? 'active' : null} onClick={handlerCurrentPage} >
+                <Link href={path} className={pathname === path ? 'active' : null} >
                   {label}
                 </Link>
               </span>

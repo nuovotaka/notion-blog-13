@@ -5,7 +5,7 @@ import { FaHome, FaUser, FaLink } from 'react-icons/fa'
 import { MdPrivacyTip } from 'react-icons/md'
 import Link from 'next/link'
 import { redirect, usePathname } from 'next/navigation'
-import { useStaticState } from '../lib/state-manage'
+// import { useStaticState } from '../lib/state-manage'
 
 
 interface NavItem {
@@ -16,14 +16,14 @@ interface NavItem {
 
 const BottomNav = () => {
   const pathname = usePathname()
-  const [currentPage,] = useStaticState('currentPage')
+  // const [currentPage,] = useStaticState('currentPage')
 
-  const handlerCurrentPage = () => {
-    if (pathname === '/blog') {
-      currentPage.page = 1
-      redirect('/blog')
-    }
-  }
+  // const handlerCurrentPage = () => {
+  //   if (pathname === '/blog') {
+  //     currentPage.page = 1
+  //     redirect('/blog')
+  //   }
+  // }
 
   const navItems: NavItem[] = [
     { label: 'Home', path: '/blog' , icon: <FaHome size={20} color={'#999'} /> },
@@ -37,7 +37,7 @@ const BottomNav = () => {
       <ul>
         {navItems.map(({ label, path , icon}) => (
           <li key={label}>
-            <Link href={path} className={pathname === path ? 'active' : null} onClick={handlerCurrentPage} >
+            <Link href={path} className={pathname === path ? 'active' : null} >
               {icon}<br/>
               {label}
             </Link>
