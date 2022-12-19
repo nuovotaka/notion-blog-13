@@ -1,21 +1,25 @@
 import { notFound } from 'next/navigation'
+import { NUMBER_OF_POSTS_PER_PAGE } from '../../../../app/server-constants'
 import GoogleAnalytics from '../../../../components/google-analytics'
 import {
   BlogPostLink,
   BlogTagLink,
+  NextPageLink,
+  PostDate,
+  PostExcerpt,
+  PostTags,
+  PostTitle,
 } from '../../../../components/blog-parts'
-import styles from '../../../../styles/blog.module.scss'
 import {
   getPosts,
   getRankedPosts,
   getPostsByTag,
+  getFirstPostByTag,
   getAllTags,
 } from '../../../../lib/notion/client'
-import Pagination from '../../../../components/pagination'
-import { NUMBER_OF_POSTS_PER_PAGE } from '../../../server-constants'
+import styles from '../../../../styles/blog.module.scss'
 
 export const revalidate = 60
-
 export const dynamicParams = false
 
 export async function generateStaticParams() {
@@ -26,13 +30,14 @@ export async function generateStaticParams() {
 const BlogTagPage = async ({ params: { tag: encodedTag } }) => {
   const tag = decodeURIComponent(encodedTag)
 
-  const posts = await getPostsByTag(tag)
+  const posts = await getPostsByTag(tag, NUMBER_OF_POSTS_PER_PAGE)
 
   if (posts.length === 0) {
     notFound()
   }
 
-  const [rankedPosts, recentPosts, tags] = await Promise.all([
+  const [firstPost, rankedPosts, recentPosts, tags] = await Promise.all([
+    getFirstPostByTag(tag),
     getRankedPosts(),
     getPosts(5),
     getAllTags(),
@@ -47,8 +52,23 @@ const BlogTagPage = async ({ params: { tag: encodedTag } }) => {
             <h2>{tag}</h2>
           </header>
 
-          <Pagination allItems={posts} perpage={NUMBER_OF_POSTS_PER_PAGE} />
+        <div className={styles.template}>
+          {posts.map(post => {
+            return (
+              <div className={styles.post} key={post.Slug}>
+                <PostDate post={post} />
+                <PostTags post={post} />
+                <PostTitle post={post} />
+                <PostExcerpt post={post} />
+              </div>
+            )
+          })}
         </div>
+
+        <footer>
+            <NextPageLink firstPost={firstPost} posts={posts} tag={tag} />
+        </footer>
+      </div>
 
         <div className={styles.subContent}>
           <BlogPostLink heading="Recommended" posts={rankedPosts} />
